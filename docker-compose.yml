@@ -1,0 +1,27 @@
+statsd:
+    image: shakr/statsd-influxdb
+    ports:
+        - "8126:8126"
+        - "8125:8125/tcp"
+        - "8125:8125/udp"
+    environment:
+        INFLUXDB_HOST: influxdb
+        INFLUXDB_DATABASE: statsd
+        INFLUXDB_USERNAME: root
+        INFLUXDB_PASSWORD: root
+        STATSD_DEBUG: True
+    volumes:
+        - ./config.js:/statsd/config.js
+    links:
+        - influxdb
+influxdb:
+    image: tutum/influxdb:latest
+    ports:
+        - "8083:8083"
+        - "8086:8086"
+    environment:
+        PRE_CREATE_DB: statsd
+grafana:
+    image: grafana/grafana:4.2.0
+    ports:
+        - "3000:3000"
