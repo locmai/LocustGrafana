@@ -5,7 +5,7 @@ import json
 import requests
 from statsd import TCPStatsClient
 
-from Core.config import Config
+from core.config import Config
 
 
 def init_statsd():
@@ -21,7 +21,7 @@ def init_grafana_dashboard():
     grafana_user = Config.GRAFANA_USER
     grafana_password = Config.GRAFANA_PASSWORD
 
-    payload = {"user": grafana_user, "email": "", "password": grafana_password}
+    payload = {"user": grafana_user, "password": grafana_password}
     headers = {'Content-Type': 'application/json'}
 
     session = requests.Session()
@@ -29,7 +29,7 @@ def init_grafana_dashboard():
     response = post_with_retries(session, "{0}/login".format(grafana_url), payload, headers)
     data = response.json()
 
-    print(data)
+    #print(data)
 
     if 'logged in' == data['message'].lower():
         # Create data source
@@ -51,7 +51,7 @@ def init_grafana_dashboard():
         print(response.json())
 
 
-def init_influxdb_():
+def init_influxdb():
     influxdb_url = Config.INFLUXDB_HOST
 
     session = requests.Session()
@@ -79,7 +79,7 @@ def post_with_retries(session, url, payload, headers):
     while retries > 0:
         try:
             response = session.post(url, data=json.dumps(payload), headers=headers)
-            print(response.text)
+            print(response.status_code)
             return response
             break
         except ConnectionError as e:

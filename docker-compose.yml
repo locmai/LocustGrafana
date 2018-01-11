@@ -9,7 +9,7 @@ statsd:
         INFLUXDB_DATABASE: statsd
         INFLUXDB_USERNAME: root
         INFLUXDB_PASSWORD: root
-        STATSD_DEBUG: True
+        STATSD_DEBUG: 'True'
     volumes:
         - ./config.js:/statsd/config.js
     links:
